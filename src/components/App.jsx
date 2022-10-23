@@ -20,11 +20,13 @@ import { publicProvider } from 'wagmi/providers/public';
 import { useEffect, useState } from 'react';
 import { ConnectButton ,lightTheme} from '@rainbow-me/rainbowkit';
 import { ethers } from 'ethers';
+import Marketplace from './listorder';
+import FilterRowDemo from './fillorder.tsx';
 
 const { chains, provider } = configureChains(
   [chain.goerli],
   [
-    alchemyProvider({ apiKey: process.env.API_KEY }),
+    alchemyProvider({ apiKey: 'kBCMGtSUEZ3Yrkg6WRv4Z9B5s7-_VwxX' }),
     publicProvider()
   ]
 );
@@ -66,7 +68,8 @@ function App() {
         </header>
         
         <div className="App-body">
-              <h2>checking</h2>
+              <Marketplace />
+              <FilterRowDemo />
         </div>
        </div>
 ,

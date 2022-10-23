@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity 0.8.17;
+pragma solidity 0.8.17 ;
 
 import "hardhat/console.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -34,15 +34,16 @@ contract Exitliquidity is Ownable {
     // we collect 0.5% of token amount here as listing fee and transferred to owner directly;
     function marketOrder(address _token, uint _amount, uint expiration) external payable {
         require(IERC20(_token).balanceOf(msg.sender) >= _amount,"you dont have enough tokens");
-        // require(expiration >= block.timestamp + 86000,"increase expiration to alteast 1 day");
+        require(expiration >= block.timestamp + 86000,"increase expiration to alteast 1 day");
         
         Tokeninfo memory _tokeninfo = Tokeninfo( _token, Dealstatus.forsale, _amount, expiration);
         user[msg.sender].push(_tokeninfo);
+        // IERC20(_token).approve(msg.sender,_amount);
         IERC20(_token).transferFrom(msg.sender,address(this), _amount ); // * 995 / 1000  if 0.5% platform fee   
 
         // IERC20(_token).transferFrom(msg.sender, payable(owner()), _amount * 5 / 1000); // 0.5% platform fee     
 
-        emit ListedPositions(msg.sender,(user[msg.sender]).length,_amount, expiration);
+        emit ListedPositions(msg.sender,((user[msg.sender]).length - 1),_amount, expiration);
     }
     
     // liquidity will be cleared with eth only (means token of that network => eth in ethereum nets, matic in polygon net(cange api getrequest acc to each network))
@@ -93,3 +94,6 @@ contract Exitliquidity is Ownable {
     }
     
 }
+
+// 0x22e5D45BB40ad3844Fa062135C5010429B1920a7 2pm thurs
+// const user = '0x78351284f83A52b726aeEe6C2ceBBe656124434c';
